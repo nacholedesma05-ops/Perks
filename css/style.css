@@ -1,0 +1,445 @@
+/* =========================================
+   VARIABLES Y CONFIGURACIÓN BASE
+   ========================================= */
+:root {
+    --bg-color: #0b0f1a;      
+    --card-bg: #161b2c;       
+    --text-main: #ffffff;     
+    --text-muted: #94a3b8;    
+    --accent-blue: #00d2ff;   
+    --accent-green: #00ff88;  
+    --accent-orange: #ff9d00; 
+    --border-color: #2d364f;  
+    --header-height: 70px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   CONTENEDOR Y HEADER
+   ========================================= */
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    padding: 20px;
+    padding-top: calc(var(--header-height) + 10px);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: var(--header-height);
+    background-color: rgba(11, 15, 26, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-blue);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+/* =========================================
+   TARJETAS Y BOTONES
+   ========================================= */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.section-subtitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.main-select {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--bg-color);
+    color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.btn-primary, .btn-secondary, .btn-choice {
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary { background-color: var(--accent-blue); color: #000; }
+.btn-secondary { background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue); }
+
+.btn-choice {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+.btn-choice.active {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: rgba(0, 210, 255, 0.1);
+}
+
+.btn-text-add {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 10px 0;
+    cursor: pointer;
+    text-align: left;
+    display: inline-block;
+}
+
+/* =========================================
+   LISTADO DE PERKS Y PROGRESO
+   ========================================= */
+.perk-item { margin-bottom: 15px; }
+.perk-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 500;}
+.progress-bar-bg { background: #0f172a; height: 10px; border-radius: 5px; overflow: hidden; border: 1px solid var(--border-color); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-green)); transition: width 0.5s; }
+.hobby-fill { background: linear-gradient(90deg, #9c27b0, var(--accent-orange)) !important; }
+
+/* =========================================
+   SELECTOR DE DÍAS
+   ========================================= */
+.label-small { font-size: 0.65rem; color: var(--accent-blue); display: block; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day-opt {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.day-opt.active {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: rgba(0, 210, 255, 0.1);
+}
+
+/* =========================================
+   NAVEGACIÓN INFERIOR
+   ========================================= */
+.big-nav-btn {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+
+.icon-circle {
+    width: 45px; height: 45px;
+    background: rgba(0, 210, 255, 0.1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    border: 1px solid rgba(0, 210, 255, 0.2);
+}
+
+.horario-btn { border-left: 5px solid var(--accent-green); }
+
+/* =========================================
+   PANTALLAS COMPLETAS (OVERLAYS)
+   ========================================= */
+.full-screen-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* CRONÓMETRO DE ENFOQUE */
+.circular-progress {
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    border: 10px solid var(--card-bg);
+    border-top: 10px solid var(--accent-blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto;
+}
+
+#big-timer-display { font-size: 3rem; font-weight: bold; font-family: monospace; }
+.percentage-badge { background: var(--accent-green); color: #000; padding: 6px 16px; border-radius: 20px; font-weight: bold; margin-top: -20px; margin-bottom: 40px; }
+
+/* =========================================
+   WHEEL PICKER (CARGA MANUAL)
+   ========================================= */
+.time-picker-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    background: #0f172a;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+}
+
+.picker-column {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    width: 70px;
+    scrollbar-width: none;
+}
+
+.picker-column::-webkit-scrollbar { display: none; }
+
+.picker-number {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--text-muted);
+    scroll-snap-align: center;
+}
+
+.picker-separator { font-size: 2rem; color: var(--accent-blue); padding: 0 10px; }
+.picker-labels { display: flex; justify-content: space-around; padding: 5px 40px 20px; font-size: 0.7rem; color: var(--accent-blue); }
+
+/* Estilos para Estadísticas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.stat-box {
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.stat-val {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-blue);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* Estilos para Horarios */
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.schedule-days {
+    font-size: 0.75rem;
+    color: var(--accent-green);
+    font-weight: bold;
+}
+
+.schedule-day-group {
+    margin-bottom: 20px;
+    border-left: 3px solid var(--accent-blue);
+    padding-left: 15px;
+}
+
+.day-title {
+    color: var(--accent-blue);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.no-activity {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.badge-perk { color: var(--accent-green); font-weight: bold; }
+.badge-hobby { color: var(--accent-orange); font-weight: bold; }
+
+.schedule-footer {
+    margin-top: 30px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.schedule-footer p {
+    margin-bottom: 5px;
+    color: var(--text-muted);
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -280px; /* Escondido a la derecha */
+    width: 280px;
+    height: 100vh;
+    background-color: var(--card-bg);
+    z-index: 3000;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    transition: 0.3s ease-in-out;
+    padding: 20px;
+    border-left: 1px solid var(--border-color);
+}
+
+.sidebar.active {
+    right: 0; /* Se desliza hacia adentro */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.close-sidebar {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-link {
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.nav-link:active {
+    background: var(--accent-blue);
+    color: #000;
+}
+
+.nav-link span {
+    margin-right: 10px;
+}
+
+/* OVERLAY (Fondo difuminado) */
+.overlay-dark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    display: none;
+    z-index: 2500;
+}
+
+.overlay-dark.active {
+    display: block;
+}

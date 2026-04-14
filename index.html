@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Perks - Sistema de Alto Rendimiento</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="manifest" href="manifest.json">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Perks">
+
+<link rel="apple-touch-icon" href="logo.png">
+
+<meta name="theme-color" content="#0b0f1a">
+
+</head>
+<body>
+
+    <div class="app-container" id="main-dashboard">
+        <header class="main-header">
+    <h1 class="logo">Perks</h1>
+    <div class="header-right">
+        <div id="user-credits" style="
+            color: var(--accent-green); 
+            font-weight: bold; 
+            margin-right: 35px; 
+            font-size: 1.1rem; 
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+            letter-spacing: 0.5px;">
+            💰 0
+        </div>
+        <button class="menu-btn" id="btn-settings">☰</button>
+    </div>
+
+    <div id="side-menu" class="sidebar">
+    <div class="sidebar-header">
+        <h2 class="section-subtitle">MENÚ</h2>
+        <button class="close-sidebar" onclick="toggleMenu()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-link" onclick="handleMenuClick('Cuenta')">
+            <span>👤</span> Cuenta
+        </div>
+        <div class="nav-link" onclick="handleMenuClick('Configuración')">
+            <span>⚙️</span> Configuración
+        </div>
+        <div class="nav-link" onclick="handleMenuClick('Mercado')">
+            <span>🛒</span> Mercado
+            <small style="display:block; color:var(--accent-green); font-size:0.6rem;">¡Canjeá tus créditos!</small>
+        </div>
+    </nav>
+</div>
+
+<div id="menu-overlay" class="overlay-dark" onclick="toggleMenu()"></div>
+
+<section id="screen-account" class="full-screen-overlay" style="display: none;">
+    <div class="card" style="width: 90%; max-width: 400px; text-align: center;">
+        <div class="perk-badge-icon" style="margin-bottom: 20px;">👤</div>
+        <h3 class="section-subtitle">MI CUENTA</h3>
+        
+        <div id="user-logged-out">
+            <button class="btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="handleLogin('google')">
+                CONTINUAR CON GOOGLE
+            </button>
+            <button class="btn-secondary" style="width: 100%; margin-bottom: 10px;" onclick="handleLogin('personalizada')">
+                CUENTA PERSONALIZADA
+            </button>
+            <button class="btn-secondary" style="width: 100%; border-style: dashed;" onclick="handleLogin('invitado')">
+                ENTRAR COMO INVITADO
+            </button>
+        </div>
+
+        <div id="user-logged-in" style="display: none;">
+            <p id="user-email" style="font-weight: bold; margin-bottom: 10px; color: var(--accent-blue);"></p>
+            <button class="btn-secondary" style="width: 100%;" onclick="handleLogout()">CERRAR SESIÓN</button>
+        </div>
+
+        <button class="btn-text-add" style="margin-top: 20px;" onclick="closeAllScreens()">VOLVER</button>
+    </div>
+</section>
+
+</header>
+
+        <section class="card">
+            <h3 class="section-subtitle">COMENZAR</h3>
+            <select id="perk-selector" class="main-select">
+                <option value="" disabled selected>Seleccioná una actividad...</option>
+            </select>
+            <div class="action-buttons">
+                <button class="btn-primary" id="btn-cronometrar">⏱️ CRONOMETRAR</button>
+                <button class="btn-secondary" id="btn-cargar-manual">✍️ CARGAR</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3 class="section-subtitle">MIS PERKS (METAS)</h3>
+            <div id="perks-container"></div>
+            <div class="btn-text-add" onclick="openNewActivity('perk')">+ Agregar Perk</div>
+        </section>
+
+        <section class="card">
+            <h3 class="section-subtitle">MIS HOBBIES (LÍMITES)</h3>
+            <div id="hobbies-container"></div>
+            <div class="btn-text-add" onclick="openNewActivity('hobby')">+ Agregar Hobby</div>
+        </section>
+
+        <div class="big-nav-btn" id="go-to-stats">
+            <div class="icon-circle">📈</div>
+            <div class="btn-text">
+                <strong>VER PROGRESO</strong>
+                <p>Estadísticas y créditos ganados</p>
+            </div>
+        </div>
+
+        <div class="big-nav-btn horario-btn" id="go-to-schedule">
+            <div class="icon-circle">📅</div>
+            <div class="btn-text">
+                <strong>HORARIOS</strong>
+                <p>Cronograma semanal de actividades</p>
+            </div>
+        </div>
+    </div>
+
+    <section id="screen-new-activity" class="full-screen-overlay" style="display: none;">
+        <div class="card" style="width: 95%; max-width: 400px;">
+            <h3 id="new-activity-title" class="section-subtitle">NUEVA ACTIVIDAD</h3>
+            <input type="text" id="name-input" class="main-select" placeholder="Nombre (ej: Gaming)">
+            
+            <div id="logic-selector-container">
+                <label class="label-small">TIPO DE CARGA</label>
+                <div class="action-buttons" style="margin-bottom:15px;">
+                    <button class="btn-choice active" id="btn-tipo-diario">DIARIA</button>
+                    <button class="btn-choice" id="btn-tipo-semanal">SEMANAL</button>
+                </div>
+            </div>
+
+            <div id="selector-dias" style="margin-bottom: 15px;">
+                <label class="label-small" id="label-dias-contexto">DÍAS ACTIVOS</label>
+                <div class="days-grid">
+                    <span class="day-opt" data-day="0">L</span><span class="day-opt" data-day="1">M</span><span class="day-opt" data-day="2">M</span>
+                    <span class="day-opt" data-day="3">J</span><span class="day-opt" data-day="4">V</span><span class="day-opt" data-day="5">S</span><span class="day-opt" data-day="6">D</span>
+                </div>
+            </div>
+
+            <label class="label-small" id="label-goal-contexto">HORAS OBJETIVO</label>
+            <input type="number" id="goal-hours" class="main-select" placeholder="Ej: 2">
+
+            <div class="action-buttons">
+                <button class="btn-primary" id="btn-save-activity">CREAR</button>
+                <button class="btn-secondary" onclick="closeAllScreens()">CANCELAR</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="screen-setup-session" class="full-screen-overlay" style="display: none;">
+        <div class="card" style="width: 90%; max-width: 400px; text-align: center;">
+            <h3 id="setup-perk-name" class="section-subtitle">CONFIGURAR SESIÓN</h3>
+            <p id="current-progress-info" style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted);"></p>
+            
+            <label class="label-small">¿CUÁNTO TIEMPO VAS A DEDICAR?</label>
+            <select id="session-tanda-selector" class="main-select">
+                <option value="30">30 Minutos</option>
+                <option value="60">1 Hora</option>
+                <option value="120">2 Horas</option>
+                <option value="final">Hasta completar el Perk</option>
+            </select>
+
+            <div class="action-buttons">
+                <button class="btn-primary" id="btn-start-focus">¡EMPEZAR!</button>
+                <button class="btn-secondary" onclick="closeAllScreens()">CANCELAR</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="screen-timer" class="full-screen-overlay" style="display: none;">
+        <div class="timer-focus-container">
+            <h2 id="active-perk-name">---</h2>
+            <div class="circular-progress">
+                <span id="big-timer-display">00:00:00</span>
+                <p id="progress-status">Mantené el foco</p>
+            </div>
+            <div class="percentage-badge" id="active-percent">0%</div>
+            <button class="btn-primary" id="btn-stop-timer">FINALIZAR SESIÓN</button>
+        </div>
+    </section>
+
+    <section id="screen-stats" class="full-screen-overlay" style="display: none; overflow-y: auto; align-items: flex-start; padding-top: 80px;">
+    <div class="app-container">
+        <header class="main-header">
+            <h1 class="logo">Progreso</h1>
+            <div class="header-right"><button class="menu-btn" onclick="closeAllScreens()">✕</button></div>
+        </header>
+
+        <section class="card">
+            <h3 class="section-subtitle">PERKS VS HOBBIES (SEMANAL)</h3>
+            <div style="height: 250px;">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3 class="section-subtitle">DISTRIBUCIÓN TOTAL</h3>
+            <div style="height: 200px; display: flex; justify-content: center;">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3 class="section-subtitle">GANANCIAS</h3>
+            <div class="stats-grid">
+                <div class="stat-box"><span class="stat-val" id="stat-total-hours">0h</span><span class="stat-label">Productivas</span></div>
+                <div class="stat-box"><span class="stat-val" id="stat-credits">0</span><span class="stat-label">Créditos</span></div>
+            </div>
+        </section>
+        <button class="btn-secondary" style="width: 100%; margin: 20px 0;" onclick="closeAllScreens()">VOLVER</button>
+    </div>
+</section>
+
+    <section id="screen-schedule" class="full-screen-overlay" style="display: none; overflow-y: auto; align-items: flex-start; padding-top: 80px;">
+        <div class="app-container">
+            <header class="main-header">
+                <h1 class="logo">Horarios</h1>
+                <div class="header-right"><button class="menu-btn" onclick="closeAllScreens()">✕</button></div>
+            </header>
+            <section class="card">
+                <h3 class="section-subtitle">CRONOGRAMA SEMANAL</h3>
+                <div id="schedule-list"></div>
+            </section>
+            <button class="btn-secondary" style="width: 100%; margin-top: 20px; margin-bottom: 40px;" onclick="closeAllScreens()">VOLVER</button>
+        </div>
+    </section>
+
+    <section id="screen-manual" class="full-screen-overlay" style="display: none;">
+        <div class="card" style="width: 90%; max-width: 400px;">
+            <h3 class="section-subtitle">CARGAR TIEMPO MANUAL</h3>
+            <select id="manual-perk-selector" class="main-select"></select>
+            <div class="time-picker-container">
+                <div class="picker-column" id="picker-hours"></div>
+                <div class="picker-separator">:</div>
+                <div class="picker-column" id="picker-minutes"></div>
+            </div>
+            <div class="picker-labels"><span>HORAS</span><span>MINUTOS</span></div>
+            <div class="action-buttons">
+                <button class="btn-primary" id="btn-save-manual">GUARDAR</button>
+                <button class="btn-secondary" onclick="closeAllScreens()">VOLVER</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
